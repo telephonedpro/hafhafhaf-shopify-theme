@@ -1,83 +1,107 @@
-{% assign hero_product = all_products['automatic-smart-cat-litter-box'] %}
-{% assign hero_image = section.settings.hero_image | default: hero_product.featured_image %}
+{% assign litter = all_products['automatic-smart-cat-litter-box'] %}
+{% assign camera_feeder = all_products['automatic-pet-feeder-with-camera'] %}
+{% assign wifi_feeder = all_products['smart-automatic-pet-feeder-wifi-voice-control'] %}
 
-<section class="hero">
-  <div class="hero__copy">
-    <div class="hero__content reveal">
-      <div class="eyebrow">HafHafHaf · intelligent pet living</div>
-      <h1>Pet care, <em>beautifully</em> simplified.</h1>
-      <p>Thoughtful technology for feeding, hygiene and the everyday rituals that make life with your pet better.</p>
-      <div class="hero__actions"><a class="button button--green" href="/collections/all">Shop the collection</a><a class="text-link" href="#philosophy">Explore HafHafHaf <span>↗</span></a></div>
-      <div class="hero__micro"><strong>01</strong><span>Designed for real homes</span><span>·</span><span>Built for real routines</span></div>
+<section class="hf-hero">
+  <div class="hf-hero__copy reveal">
+    <div class="hf-kicker">HAFHAFHAF / SMART PET LIVING</div>
+    <h1>Better care.<br><span>Less to think about.</span></h1>
+    <p>Smart feeding and hygiene essentials, chosen for modern homes and the people who love their pets.</p>
+    <div class="hf-actions">
+      <a class="hf-btn hf-btn--dark" href="#shop">Shop smart care</a>
+      <a class="hf-link" href="#featured">See the collection <span>↘</span></a>
     </div>
+    <div class="hf-hero__note"><span>01</span><span>Designed around real routines</span></div>
   </div>
-  <div class="hero__media">
-    <span class="hero__badge">The flagship · {{ hero_product.price | money }}</span>
-    {% if hero_image %}{{ hero_image | image_url: width:2400 | image_tag: loading:'eager', widths:'900,1200,1600,2000,2400', sizes:'57vw', alt:hero_product.title }}{% endif %}
-    <div class="hero__caption"><span>Automatic Smart Cat Litter Box</span><span class="hero__price">{{ hero_product.price | money }}</span></div>
+  <div class="hf-hero__visual reveal">
+    <div class="hf-hero__shape"></div>
+    <div class="hf-hero__product">
+      {% if litter.featured_image %}{{ litter.featured_image | image_url: width:1800 | image_tag: loading:'eager', widths:'700,1000,1300,1600,1800', sizes:'46vw', alt:litter.title }}{% endif %}
+    </div>
+    <div class="hf-hero__label"><span>01 / 04</span><strong>Automatic Smart Litter Box</strong><em>{{ litter.price | money }}</em></div>
   </div>
 </section>
 
-<section class="proof-strip page-width reveal">
-  <div><strong>Smarter routines</strong><span>Automate the repetitive</span></div>
-  <div><strong>Quiet technology</strong><span>Made to live at home</span></div>
-  <div><strong>Connected care</strong><span>Stay informed, not occupied</span></div>
-  <div><strong>Focused collection</strong><span>Only what earns its place</span></div>
+<section class="hf-proof reveal">
+  <div><strong>Smart routines</strong><span>Automate feeding & hygiene</span></div>
+  <div><strong>Real products</strong><span>No decorative mockups</span></div>
+  <div><strong>Clear choices</strong><span>A focused collection</span></div>
+  <div><strong>Easy checkout</strong><span>Built for everyday buying</span></div>
 </section>
 
-<section class="section page-width" id="shop">
-  <div class="section-head reveal"><div><div class="eyebrow">01 · Shop</div><h2>A smaller collection.<br>Better considered.</h2></div><p>We curate smart pet essentials around the moments owners actually repeat: feeding, monitoring and keeping the home clean.</p></div>
-  <div class="product-grid">
-    {% for product in collections.all.products limit:10 %}
-      <article class="product-card reveal reveal-delay-{{ forloop.index | modulo:3 }}">
-        <div class="product-card__media">
-          {% if forloop.first %}<span class="product-card__tag">Flagship</span>{% endif %}
-          <a href="{{ product.url }}" aria-label="View {{ product.title | escape }}">{% if product.featured_image %}{{ product.featured_image | image_url: width:1600 | image_tag: loading:'lazy', widths:'600,900,1200,1600', sizes:'(max-width:760px) 50vw, (max-width:1050px) 50vw, 33vw', alt:product.title }}{% endif %}</a>
-          {% if product.available %}<form action="/cart/add" method="post" data-quick-add><input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}"><input type="hidden" name="quantity" value="1"><button class="product-card__quick" type="submit">Quick add · {{ product.price | money }}</button></form>{% endif %}
+<section class="hf-section" id="shop">
+  <div class="hf-section__head reveal">
+    <div><div class="hf-kicker">THE COLLECTION</div><h2>Smart essentials,<br><i>properly presented.</i></h2></div>
+    <div class="hf-section__intro"><p>We keep the range tight: useful technology for feeding, monitoring and keeping the home clean.</p><a class="hf-link" href="/collections/all">View all products <span>→</span></a></div>
+  </div>
+
+  <div class="hf-product-grid" id="featured">
+    {% for product in collections.all.products limit:8 %}
+      <article class="hf-card reveal" style="--delay:{{ forloop.index | times: 60 }}ms">
+        <a class="hf-card__media hf-tone-{{ forloop.index | modulo: 4 }}" href="{{ product.url }}">
+          <span class="hf-card__index">0{{ forloop.index }}</span>
+          {% if product.featured_image %}{{ product.featured_image | image_url: width:1200 | image_tag: loading:'lazy', widths:'500,700,900,1200', sizes:'(max-width:700px) 50vw, (max-width:1000px) 33vw, 25vw', alt:product.title }}{% endif %}
+          <span class="hf-card__arrow">↗</span>
+        </a>
+        <div class="hf-card__info">
+          <div class="hf-card__name"><a href="{{ product.url }}">{{ product.title }}</a><span>{{ product.price | money }}</span></div>
+          {% assign rating = product.metafields.reviews.rating.value.rating %}{% assign rating_count = product.metafields.reviews.rating_count.value %}
+          <div class="hf-rating">
+            {% if rating_count and rating_count > 0 %}<span class="hf-stars">★★★★★</span><span>{{ rating | round:1 }}</span><a href="{{ product.url }}#reviews">{{ rating_count }} reviews</a>{% else %}<span class="hf-stars hf-stars--empty">★★★★★</span><a href="{{ product.url }}#reviews">Be the first to review</a>{% endif %}
+          </div>
         </div>
-        <div class="product-card__meta"><div><a class="product-card__title" href="{{ product.url }}">{{ product.title }}</a>
-          {% assign rating = product.metafields.reviews.rating.value.rating %}{% assign rating_count = product.metafields.reviews.rating_count %}
-          {% if rating_count and rating_count > 0 %}<div class="rating-line"><span class="stars">★★★★★</span><span>{{ rating | round:1 }}</span><a href="{{ product.url }}#reviews">{{ rating_count }} reviews</a></div>{% else %}<div class="rating-line"><span>Reviews</span><a href="{{ product.url }}#reviews">View product reviews</a></div>{% endif %}
-        </div><div class="product-card__price">{{ product.price | money }}</div></div>
       </article>
     {% endfor %}
   </div>
-  <div class="collection-promo reveal"><div><strong>Not sure where to start?</strong><br><span>Find the right smart-care product for your routine.</span></div><a class="button button--outline" href="/collections/all">Explore all products</a></div>
 </section>
 
-<div class="marquee"><div class="marquee__track"><span>Less routine</span><i>✦</i><span>More connection</span><i>✦</i><span>Cleaner spaces</span><i>✦</i><span>Better everyday care</span><i>✦</i><span>Less routine</span><i>✦</i><span>More connection</span><i>✦</i><span>Cleaner spaces</span><i>✦</i><span>Better everyday care</span></div></div>
-
-<section class="section page-width" id="philosophy">
-  <div class="color-band reveal"><div class="color-band__copy"><div><div class="eyebrow" style="color:#c8d4cd">02 · Our philosophy</div><h2>Technology should make<br>home feel <em>more human.</em></h2></div><a class="button button--cream" href="/pages/about">Our story ↗</a></div><div class="color-band__orb"></div></div>
-</section>
-
-<section class="section page-width">
-  <div class="story-grid reveal">
-    <div class="story-image">{% if section.settings.story_image %}{{ section.settings.story_image | image_url: width:2400 | image_tag: loading:'lazy', widths:'900,1400,1800,2200,2400', sizes:'50vw', alt:'HafHafHaf pet care' }}{% elsif hero_product.images[1] %}{{ hero_product.images[1] | image_url: width:2000 | image_tag: loading:'lazy', widths:'800,1200,1600,2000', sizes:'50vw', alt:hero_product.title }}{% endif %}<span class="image-note">Objects that earn their place.</span></div>
-    <div class="story-copy"><div class="eyebrow">A better standard</div><h2>Quietly clever.<br><em>Genuinely useful.</em></h2><p>We look for products that solve a real problem, feel considered in the home and make the daily relationship between people and pets easier.</p><div class="story-list"><div><b>01</b><span>Automate what you repeat</span></div><div><b>02</b><span>Keep visibility where it matters</span></div><div><b>03</b><span>Choose design that belongs at home</span></div></div><a class="text-link" href="/pages/about">Read the HafHafHaf philosophy <span>↗</span></a></div>
+<section class="hf-story">
+  <div class="hf-story__visual reveal">
+    <div class="hf-story__backdrop"></div>
+    {% if camera_feeder.featured_image %}{{ camera_feeder.featured_image | image_url: width:1600 | image_tag: loading:'lazy', widths:'700,1000,1300,1600', sizes:'50vw', alt:camera_feeder.title }}{% endif %}
+    <span class="hf-float">CONNECTED CARE / 02</span>
+  </div>
+  <div class="hf-story__copy reveal">
+    <div class="hf-kicker">THE IDEA</div>
+    <h2>Technology that<br><i>earns its space.</i></h2>
+    <p>Pet products shouldn't look like gadgets dropped into your living room. We focus on quiet, useful technology with a clear purpose.</p>
+    <div class="hf-points"><div><b>01</b><span>Automate repetitive tasks.</span></div><div><b>02</b><span>Keep an eye on routines from anywhere.</span></div><div><b>03</b><span>Choose products that belong in the home.</span></div></div>
+    <a class="hf-link" href="/pages/about">Why HafHafHaf <span>→</span></a>
   </div>
 </section>
 
-<section class="section page-width">
-  <div class="section-head reveal"><div><div class="eyebrow">03 · The flagship</div><h2>Start with the<br>routine that matters most.</h2></div><p>A cleaner litter routine can change the entire feel of a home. This is where HafHafHaf begins.</p></div>
-  <div class="flagship reveal">
-    <div class="flagship__copy"><div class="eyebrow">Automatic Smart Cat Litter Box</div><h2>Less cleaning.<br>More living.</h2><p>Automatic cleaning, thoughtful containment and a calmer everyday experience for both cat and owner.</p><div class="flagship__price">{{ hero_product.price | money }} <span>· flagship system</span></div><a class="button button--cream" href="{{ hero_product.url }}">Discover the litter box</a></div>
-    <div class="flagship__media">{% if section.settings.feature_image %}{{ section.settings.feature_image | image_url: width:2400 | image_tag: loading:'lazy', widths:'900,1400,1800,2200,2400', sizes:'55vw', alt:hero_product.title }}{% elsif hero_product.featured_image %}{{ hero_product.featured_image | image_url: width:2200 | image_tag: loading:'lazy', widths:'900,1400,1800,2200', sizes:'55vw', alt:hero_product.title }}{% endif %}</div>
+<section class="hf-feature">
+  <div class="hf-feature__copy reveal">
+    <div class="hf-kicker">THE ONE TO START WITH</div>
+    <h2>A cleaner litter<br><i>routine.</i></h2>
+    <p>Automatic cleaning, contained waste and less daily maintenance — built around a calmer home.</p>
+    <div class="hf-feature__price">{{ litter.price | money }} <small>automatic litter system</small></div>
+    <a class="hf-btn hf-btn--light" href="{{ litter.url }}">Explore the litter box</a>
+  </div>
+  <div class="hf-feature__visual reveal">
+    {% if litter.images[1] %}{{ litter.images[1] | image_url: width:1800 | image_tag: loading:'lazy', widths:'700,1000,1300,1600,1800', sizes:'55vw', alt:litter.title }}{% elsif litter.featured_image %}{{ litter.featured_image | image_url: width:1800 | image_tag: loading:'lazy', widths:'700,1000,1300,1600,1800', sizes:'55vw', alt:litter.title }}{% endif %}
   </div>
 </section>
 
-<section class="section page-width">
-  <div class="section-head reveal"><div><div class="eyebrow">04 · Why HafHafHaf</div><h2>Four things we refuse<br>to compromise.</h2></div><p>Good ecommerce should not feel like a catalogue. Every touchpoint has a job: explain, reassure, inspire or make buying easier.</p></div>
-  <div class="benefits reveal"><div class="benefit"><div class="benefit__num">01</div><strong>Useful technology</strong><p>Products are selected around real, repeated pet-care tasks.</p></div><div class="benefit"><div class="benefit__num">02</div><strong>Human design</strong><p>Warm materials, considered proportions and color that feels at home.</p></div><div class="benefit"><div class="benefit__num">03</div><strong>Simple decisions</strong><p>Clear information and focused choices without the clutter.</p></div><div class="benefit"><div class="benefit__num">04</div><strong>Real proof</strong><p>Product ratings and customer reviews are surfaced from verified review data.</p></div></div>
+<section class="hf-benefits hf-section">
+  <div class="hf-section__head reveal"><div><div class="hf-kicker">WHY SHOP HAFHAFHAF</div><h2>Simple, useful,<br><i>considered.</i></h2></div></div>
+  <div class="hf-benefit-grid">
+    <div class="hf-benefit hf-benefit--cream reveal"><span>01</span><h3>Focused range</h3><p>We'd rather have ten useful products than a thousand forgettable ones.</p></div>
+    <div class="hf-benefit hf-benefit--yellow reveal"><span>02</span><h3>Made for routines</h3><p>Feeding, monitoring and hygiene — the things pet parents actually repeat.</p></div>
+    <div class="hf-benefit hf-benefit--blue reveal"><span>03</span><h3>Clear information</h3><p>Specifications, variants, pricing and reviews stay close to the decision.</p></div>
+    <div class="hf-benefit hf-benefit--green reveal"><span>04</span><h3>Real customer proof</h3><p>Reviews belong to real customers. We never manufacture social proof.</p></div>
+  </div>
 </section>
 
-{% assign review_blocks = section.blocks | where: 'type', 'review' %}
-{% if review_blocks.size > 0 %}<section class="section page-width"><div class="reviews reveal"><div class="reviews__head"><div><div class="eyebrow" style="color:#b7c5bd">05 · Customer stories</div><h2>Real homes.<br>Real routines.</h2></div><p>Only approved customer feedback belongs here. Add verified reviews through your review provider or the theme editor.</p></div><div class="reviews-grid">{% for block in review_blocks limit:3 %}<article class="review" {{ block.shopify_attributes }}><div class="review__stars">★★★★★</div><div class="review__quote">“{{ block.settings.quote }}”</div><div class="review__name">{{ block.settings.name }}{% if block.settings.product != blank %} · {{ block.settings.product }}{% endif %}</div></article>{% endfor %}</div></div></section>{% endif %}
-
-<section class="section page-width">
-  <div class="journal-grid reveal"><div class="journal-card journal-card--green"><div><div class="eyebrow" style="color:#c4d0c9">The HafHafHaf journal</div><h3>Better routines start with better information.</h3></div><p>Practical guides, smart-care ideas and product stories for modern pet parents.</p></div><div class="journal-card journal-card--coral"><div><div class="eyebrow" style="color:#ffe6de">Need help choosing?</div><h3>Tell us what your pet needs.</h3></div><a class="text-link" href="/pages/contact" style="color:#fff">Talk to us <span>↗</span></a></div></div>
+<section class="hf-quote reveal">
+  <div class="hf-quote__mark">“</div>
+  <p>Good pet technology should disappear into the routine — leaving more attention for the pet, not the task.</p>
+  <span>THE HAFHAFHAF STANDARD</span>
 </section>
 
-<section class="section page-width"><div class="newsletter reveal"><div><div class="eyebrow" style="color:#aebbb3">HafHafHaf notes</div><h2>Useful things.<br>Occasionally.</h2><p>New products, thoughtful pet-care ideas and private offers. No inbox clutter.</p></div>{% form 'customer' %}<input type="hidden" name="contact[tags]" value="newsletter"><div class="newsletter form"><input type="email" name="contact[email]" placeholder="Email address" aria-label="Email address" required><button class="button button--cream" type="submit">Join us</button></div>{% endform %}</div></section>
+<section class="hf-newsletter reveal">
+  <div><div class="hf-kicker">NOTES FROM HAFHAFHAF</div><h2>Useful ideas.<br><i>No inbox noise.</i></h2></div>
+  {% form 'customer' %}<input type="hidden" name="contact[tags]" value="newsletter"><div class="hf-newsletter__form"><input type="email" name="contact[email]" placeholder="Your email address" aria-label="Your email address" required><button type="submit">Join <span>→</span></button></div>{% endform %}
+</section>
 
-{% schema %}{"name":"HafHafHaf premium homepage","settings":[{"type":"image_picker","id":"hero_image","label":"Hero image — high-resolution real product photo"},{"type":"image_picker","id":"story_image","label":"Story image — high-resolution real product/lifestyle photo"},{"type":"image_picker","id":"feature_image","label":"Flagship image — high-resolution real product photo"}],"blocks":[{"type":"review","name":"Approved customer review","settings":[{"type":"textarea","id":"quote","label":"Approved review text"},{"type":"text","id":"name","label":"Customer name"},{"type":"text","id":"product","label":"Product"}]}],"presets":[{"name":"HafHafHaf premium homepage","blocks":[]}]}{% endschema %}
+{% schema %}{"name":"HafHafHaf Storefront","settings":[],"presets":[{"name":"HafHafHaf Storefront"}]}{% endschema %}
