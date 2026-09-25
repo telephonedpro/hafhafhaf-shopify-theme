@@ -8,6 +8,7 @@
   <title>{{ page_title }}{% unless page_title contains shop.name %} — {{ shop.name }}{% endunless %}</title>
   {{ content_for_header }}
   {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ 'premium.css' | asset_url | stylesheet_tag }}
   {{ 'theme.js' | asset_url | script_tag | replace: '<script', '<script defer' }}
 </head>
 <body>
