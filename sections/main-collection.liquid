@@ -1,1 +1,17 @@
-<section class="collection page-width"><div class="collection__intro"><div><div class="eyebrow">HafHafHaf collection</div><h1>{{ collection.title | default:'Smart pet care' }}</h1></div><p>Thoughtfully selected technology for feeding, hygiene and the everyday moments in between.</p></div><div class="product-grid">{% for product in collection.products %}<a class="product-card reveal" href="{{ product.url }}"><div class="product-card__media">{% if product.featured_image %}{{ product.featured_image | image_url: width:2400 | image_tag: loading:'lazy', widths:'800,1200,1600,2000,2400', sizes:'(max-width: 900px) 50vw, 33vw', alt:product.title }}{% endif %}</div><div class="product-card__meta"><div><div class="product-card__title">{{ product.title }}</div>{% if product.metafields.reviews.rating_count %}<div class="price" style="margin-top:6px">★ {{ product.metafields.reviews.rating.value.rating | round:1 }} · {{ product.metafields.reviews.rating_count }} reviews</div>{% endif %}</div><div class="product-card__price">{{ product.price | money }}</div></div></a>{% else %}<p>No products are currently available.</p>{% endfor %}</div></section>{% schema %}{"name":"Premium collection"}{% endschema %}
+<section class="collection page-width">
+  <div class="collection__intro"><div><div class="eyebrow">HafHafHaf · The collection</div><h1>{{ collection.title | default:'Smart pet care' }}</h1></div><p>A focused edit of connected feeding, hygiene and care products designed to feel as considered as the homes they live in.</p></div>
+  <div class="collection-toolbar"><span>{{ collection.products_count }} products</span><span>Smart care · considered design</span></div>
+  <div class="product-grid">
+    {% for product in collection.products %}
+      <article class="product-card reveal reveal-delay-{{ forloop.index | modulo:3 }}">
+        <div class="product-card__media">
+          {% if forloop.first %}<span class="product-card__tag">Featured</span>{% endif %}
+          <a href="{{ product.url }}" aria-label="View {{ product.title | escape }}">{% if product.featured_image %}{{ product.featured_image | image_url: width:1600 | image_tag: loading:'lazy', widths:'600,900,1200,1600', sizes:'(max-width:760px) 50vw, (max-width:1050px) 50vw, 33vw', alt:product.title }}{% endif %}</a>
+          {% if product.available %}<form action="/cart/add" method="post" data-quick-add><input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}"><input type="hidden" name="quantity" value="1"><button class="product-card__quick" type="submit">Quick add · {{ product.price | money }}</button></form>{% endif %}
+        </div>
+        <div class="product-card__meta"><div><a class="product-card__title" href="{{ product.url }}">{{ product.title }}</a>{% assign rating = product.metafields.reviews.rating.value.rating %}{% assign rating_count = product.metafields.reviews.rating_count %}{% if rating_count and rating_count > 0 %}<div class="rating-line"><span class="stars">★★★★★</span><span>{{ rating | round:1 }}</span><a href="{{ product.url }}#reviews">{{ rating_count }} reviews</a></div>{% else %}<div class="rating-line"><span>Reviews</span><a href="{{ product.url }}#reviews">View reviews</a></div>{% endif %}</div><div class="product-card__price">{{ product.price | money }}</div></div>
+      </article>
+    {% else %}<p>No products are currently available.</p>{% endfor %}
+  </div>
+</section>
+{% schema %}{"name":"Premium collection"}{% endschema %}
