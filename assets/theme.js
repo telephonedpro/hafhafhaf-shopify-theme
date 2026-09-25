@@ -1,1 +1,34 @@
-document.addEventListener('DOMContentLoaded',()=>{const targets=document.querySelectorAll('.lux-heading,.lux-card,.lux-story__image,.lux-story__copy,.lux-flagship__copy,.lux-flagship__image,.lux-review-grid article,.lux-news,.product-gallery__item,.product-summary');if('IntersectionObserver'in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target)}}),{threshold:.08,rootMargin:'0px 0px -35px'});targets.forEach((el,i)=>{el.classList.add('reveal');el.style.transitionDelay=Math.min(i*35,240)+'ms';io.observe(el)})}else targets.forEach(el=>el.classList.add('is-visible'));document.querySelectorAll('.announcement__track').forEach(t=>t.innerHTML+=t.innerHTML);document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}}));const toast=document.createElement('div');toast.className='toast';toast.setAttribute('role','status');document.body.appendChild(toast);let timer;const show=m=>{toast.textContent=m;toast.classList.add('is-visible');clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove('is-visible'),2400)};const cartCount=c=>document.querySelectorAll('.cart-count').forEach(x=>x.textContent=c.item_count);document.querySelectorAll('[data-quick-add],[data-product-form]').forEach(form=>form.addEventListener('submit',async e=>{e.preventDefault();const b=form.querySelector('button');if(b)b.classList.add('is-loading');try{const r=await fetch('/cart/add.js',{method:'POST',headers:{Accept:'application/json'},body:new FormData(form)});if(!r.ok)throw 0;const c=await(await fetch('/cart.js',{headers:{Accept:'application/json'}})).json();cartCount(c);show('Added to your bag')}catch(x){show('Something went wrong. Please try again.')}finally{if(b)b.classList.remove('is-loading')}}));const fine=matchMedia('(pointer:fine)').matches;if(fine){document.body.classList.add('has-pointer');const ring=document.createElement('div');ring.className='lux-cursor';document.body.appendChild(ring);window.addEventListener('pointermove',e=>{ring.style.transform=`translate3d(${e.clientX}px,${e.clientY}px,0)`});document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('active'));el.addEventListener('mouseleave',()=>ring.classList.remove('active'))})}document.querySelectorAll('img').forEach(i=>{if(i.complete)i.classList.add('is-loaded');else i.addEventListener('load',()=>i.classList.add('is-loaded'),{once:true})})});
+document.addEventListener('DOMContentLoaded',()=>{
+  const targets=document.querySelectorAll('.lux-heading,.lux-card,.lux-story__image,.lux-story__copy,.lux-flagship__copy,.lux-flagship__image,.lux-review-grid article,.lux-news,.product-gallery__item,.product-summary');
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');io.unobserve(entry.target)}}),{threshold:.08,rootMargin:'0px 0px -30px'});
+    targets.forEach((el,i)=>{el.classList.add('reveal');el.style.transitionDelay=Math.min(i*30,180)+'ms';io.observe(el)});
+  }else targets.forEach(el=>el.classList.add('is-visible'));
+
+  document.querySelectorAll('.announcement__track').forEach(track=>{track.innerHTML+=track.innerHTML});
+  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',event=>{const target=document.querySelector(a.getAttribute('href'));if(target){event.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}}));
+
+  const toast=document.createElement('div');
+  toast.className='toast';
+  toast.setAttribute('role','status');
+  document.body.appendChild(toast);
+  let timer;
+  const showToast=message=>{toast.textContent=message;toast.classList.add('is-visible');clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove('is-visible'),2200)};
+  const updateCartCount=cart=>document.querySelectorAll('.cart-count').forEach(node=>node.textContent=cart.item_count);
+
+  document.querySelectorAll('[data-quick-add],[data-product-form]').forEach(form=>form.addEventListener('submit',async event=>{
+    event.preventDefault();
+    const button=form.querySelector('button');
+    if(button)button.classList.add('is-loading');
+    try{
+      const response=await fetch('/cart/add.js',{method:'POST',headers:{Accept:'application/json'},body:new FormData(form)});
+      if(!response.ok)throw new Error('cart');
+      const cart=await (await fetch('/cart.js',{headers:{Accept:'application/json'}})).json();
+      updateCartCount(cart);
+      showToast('Added to your bag');
+    }catch(error){showToast('Please try again');}
+    finally{if(button)button.classList.remove('is-loading');}
+  }));
+
+  document.querySelectorAll('img').forEach(image=>{if(image.complete)image.classList.add('is-loaded');else image.addEventListener('load',()=>image.classList.add('is-loaded'),{once:true})});
+});
