@@ -1,1 +1,31 @@
-<section class="product-page page-width"><div class="product-layout"><div class="product-gallery">{% for image in product.images %}<div class="product-gallery__item reveal">{{ image | image_url: width:3840 | image_tag: loading:'lazy', widths:'1000,1600,2200,3000,3840', sizes:'(max-width: 900px) 100vw, 58vw', alt:image.alt | default:product.title }}</div>{% endfor %}</div><div class="product-summary reveal"><div class="eyebrow">{{ product.vendor | default:'HafHafHaf' }}</div><h1>{{ product.title }}</h1>{% if product.metafields.reviews.rating_count %}<div class="rating-badge"><span class="stars">★★★★★</span><strong>{{ product.metafields.reviews.rating.value.rating | round:1 }}</strong><span>{{ product.metafields.reviews.rating_count }} reviews</span></div>{% endif %}<div class="product-price">{{ product.price | money }}</div><div class="product-description">{{ product.description }}</div>{% form 'product', product, class:'product-buy' %}{% unless product.has_only_default_variant %}<label class="visually-hidden" for="ProductSelect">Choose an option</label><select id="ProductSelect" name="id">{% for variant in product.variants %}<option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}{% unless variant.available %} · Sold out{% endunless %} — {{ variant.price | money }}</option>{% endfor %}</select>{% else %}<input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">{% endunless %}<div class="product-buy__row"><input type="number" name="quantity" min="1" value="1" aria-label="Quantity"><button class="button" type="submit" {% unless product.available %}disabled{% endunless %}>{% if product.available %}Add to bag · {{ product.price | money }}{% else %}Sold out{% endif %}</button></div>{% endform %}<div class="trust-row"><div>Secure checkout<br>Protected payment</div><div>Designed for daily life<br>Modern pet care</div><div>Support<br>Here when you need us</div></div><div class="pdp-reviews"><div class="eyebrow">Customer experience</div><h2>Made to become part of the routine.</h2><p style="color:var(--muted);line-height:1.7;font-size:14px;max-width:520px">We keep this section connected to verified customer feedback. Once your review source is connected, ratings and approved reviews can appear here automatically.</p></div></div></div></section>{% schema %}{"name":"Premium product"}{% endschema %}
+<section class="product-page page-width">
+  <div class="product-layout">
+    <div class="product-gallery">
+      {% for image in product.images %}
+        <div class="product-gallery__item reveal reveal-delay-{{ forloop.index | modulo:3 }}">{{ image | image_url: width:2200 | image_tag: loading:forloop.first | default:true, widths:'700,1000,1400,1800,2200', sizes:'(max-width:760px) 100vw, 52vw', alt:image.alt | default:product.title }}</div>
+      {% endfor %}
+    </div>
+    <div class="product-summary reveal">
+      <div class="product-kicker"><span>{{ product.vendor | default:'HafHafHaf' }}</span><span>·</span><span>Designed for everyday life</span></div>
+      <h1>{{ product.title }}</h1>
+      {% assign rating = product.metafields.reviews.rating.value.rating %}{% assign rating_count = product.metafields.reviews.rating_count %}
+      <div class="rating-line" style="font-size:9px;margin:0 0 18px">{% if rating_count and rating_count > 0 %}<span class="stars">★★★★★</span><strong>{{ rating | round:1 }}</strong><a href="#reviews">{{ rating_count }} verified reviews</a>{% else %}<span>Customer reviews</span><a href="#reviews">Read reviews</a>{% endif %}</div>
+      <div class="product-price">{{ product.price | money }}</div>
+      <div class="product-description">{{ product.description }}</div>
+      {% form 'product', product, class:'product-buy', data-product-form:true %}
+        {% unless product.has_only_default_variant %}<label class="visually-hidden" for="ProductSelect">Choose an option</label><select id="ProductSelect" name="id">{% for variant in product.variants %}<option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>{{ variant.title }}{% unless variant.available %} · Sold out{% endunless %} — {{ variant.price | money }}</option>{% endfor %}</select>{% else %}<input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">{% endunless %}
+        <div class="product-buy__row"><input type="number" name="quantity" min="1" value="1" aria-label="Quantity"><button class="button button--green" type="submit" {% unless product.available %}disabled{% endunless %}>{% if product.available %}Add to bag · {{ product.price | money }}{% else %}Sold out{% endif %}</button></div>
+      {% endform %}
+      <div class="trust-row"><div>Secure checkout<br>Protected payment</div><div>Fast dispatch<br>Tracked delivery</div><div>Support<br>Human help</div></div>
+      <div class="pdp-reviews" id="reviews">
+        <div class="eyebrow">Customer reviews</div>
+        <h2>Real experiences,<br>not marketing copy.</h2>
+        {% if rating_count and rating_count > 0 %}<div class="review-summary"><span class="big">{{ rating | round:1 }}</span><span class="stars">★★★★★</span><span class="eyebrow">{{ rating_count }} reviews</span></div>{% else %}<div class="review-empty">Reviews will appear here once your verified review source is connected and customers have submitted feedback.</div>{% endif %}
+        {% if product.metafields.judgeme.widget.size > 20 %}<div style="margin-top:30px">{{ product.metafields.judgeme.widget }}</div>{% endif %}
+        <div id="judgeme_product_reviews" class="jdgm-widget jdgm-review-widget" data-product-title="{{ product.title | escape }}" data-id="{{ product.id }}" data-product-id="{{ product.id }}" data-widget="review" data-auto-install="false" data-shop-reviews-count="{{ shop.metafields.judgeme.shop_reviews_count | default:0 | escape }}" data-entry-point="review_widget.js" data-entry-key="review-widget/main.js"></div>
+        {% if product.metafields.judgeme.review_widget_data %}<script>window.jdgm=window.jdgm||{};jdgm.data=jdgm.data||{};jdgm.data.reviewWidget=jdgm.data.reviewWidget||{};jdgm.data.reviewWidget[{{ product.id }}]={{ product.metafields.judgeme.review_widget_data }};</script>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}{"name":"Premium product page","settings":[],"blocks":[{"type":"@app"}],"presets":[{"name":"Premium product page"}]}{% endschema %}
