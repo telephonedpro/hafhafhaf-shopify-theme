@@ -1,11 +1,45 @@
 {% assign litter = all_products['automatic-smart-cat-litter-box'] %}
 {% assign feeder = all_products['automatic-pet-feeder-with-camera'] %}
-<section class="lux-hero"><div class="lux-hero__copy"><span class="lux-label">HAFHAFHAF / SMART PET LIVING</span><h1>Pet care,<br><i>refined.</i></h1><p>Beautifully considered technology for feeding, cleaning and caring for the pets you love.</p><div class="lux-actions"><a class="lux-button" href="#collection">Explore the collection</a><a class="lux-textlink" href="{{ litter.url }}">Discover the flagship <span>↗</span></a></div><div class="lux-meta"><span>01</span><span>Quiet technology. Considered design.</span></div></div><div class="lux-hero__image">{% if litter.featured_image %}{{ litter.featured_image | image_url: width:1800 | image_tag: loading:'eager', widths:'800,1100,1400,1800', sizes:'55vw', alt:litter.title }}{% endif %}<div class="lux-product-caption"><span>01 / AUTOMATIC LITTER SYSTEM</span><strong>{{ litter.price | money }}</strong></div></div></section>
-<section class="lux-proof"><div><b>01</b><span>Thoughtful technology</span></div><div><b>02</b><span>Designed for the home</span></div><div><b>03</b><span>Real customer reviews</span></div><div><b>04</b><span>Secure checkout</span></div></section>
-<section class="lux-section" id="collection"><div class="lux-heading"><div><span class="lux-label">THE COLLECTION</span><h2>Less, but<br><i>better.</i></h2></div><p>A focused collection of smart essentials. No clutter, no novelty — just products with a reason to exist.</p></div><div class="lux-grid">{% for product in collections.all.products limit:6 %}<article class="lux-card"><a href="{{ product.url }}" class="lux-card__media tone-{{ forloop.index | modulo:3 }}">{% if product.featured_image %}{{ product.featured_image | image_url: width:1200 | image_tag: loading:'lazy', widths:'500,750,1000,1200', sizes:'(max-width:700px) 92vw, (max-width:1000px) 45vw, 30vw', alt:product.title }}{% endif %}<span class="lux-card__number">0{{ forloop.index }}</span><span class="lux-card__arrow">↗</span></a><div class="lux-card__info"><div><a href="{{ product.url }}">{{ product.title }}</a><small>{{ product.type | default:'Smart pet care' }}</small></div><strong>{{ product.price | money }}</strong></div>{% assign rating = product.metafields.reviews.rating.value.rating %}{% assign count = product.metafields.reviews.rating_count.value %}<div class="lux-rating">{% if count and count > 0 %}<span>★★★★★</span><b>{{ rating | round:1 }}</b><a href="{{ product.url }}#reviews">{{ count }} reviews</a>{% else %}<span class="empty">★★★★★</span><a href="{{ product.url }}#reviews">Reviews</a>{% endif %}</div></article>{% endfor %}</div></section>
-<section class="lux-marquee"><div>SMART PET LIVING <i>·</i> QUIET TECHNOLOGY <i>·</i> CONSIDERED DESIGN <i>·</i> SMART PET LIVING <i>·</i> QUIET TECHNOLOGY <i>·</i> CONSIDERED DESIGN <i>·</i></div></section>
-<section class="lux-story"><div class="lux-story__image">{% if feeder.featured_image %}{{ feeder.featured_image | image_url: width:1600 | image_tag: loading:'lazy', widths:'700,1000,1300,1600', sizes:'50vw', alt:feeder.title }}{% endif %}<span>02 / CONNECTED CARE</span></div><div class="lux-story__copy"><span class="lux-label">THE PHILOSOPHY</span><h2>Technology should<br><i>feel effortless.</i></h2><p>The best pet technology doesn't ask for attention. It quietly handles the routine, looks at home and gives you more time with your pet.</p><div class="lux-list"><div><b>01</b><span>Automate the everyday.</span></div><div><b>02</b><span>Keep the home beautiful.</span></div><div><b>03</b><span>Make information easy to understand.</span></div></div><a class="lux-textlink" href="/pages/about">Our approach <span>→</span></a></div></section>
-<section class="lux-flagship"><div class="lux-flagship__copy"><span class="lux-label">THE FLAGSHIP</span><h2>A cleaner<br><i>routine.</i></h2><p>Automatic cleaning and contained waste, designed around a calmer home and less daily maintenance.</p><div class="lux-price">{{ litter.price | money }} <small>AUTOMATIC LITTER SYSTEM</small></div><a class="lux-button lux-button--light" href="{{ litter.url }}">Explore the litter box</a></div><div class="lux-flagship__image">{% if litter.images[1] %}{{ litter.images[1] | image_url: width:1800 | image_tag: loading:'lazy', widths:'700,1000,1400,1800', sizes:'58vw', alt:litter.title }}{% endif %}</div></section>
-<section class="lux-section lux-reviews"><div class="lux-heading"><div><span class="lux-label">CUSTOMER PROOF</span><h2>Real words,<br><i>real products.</i></h2></div><p>Reviews appear here when your connected review provider has genuine customer feedback. We don't manufacture social proof.</p></div><div class="lux-review-grid"><article><div class="lux-empty-review">★★★★★</div><p>Customer reviews will appear here automatically once genuine review data is connected.</p><small>CONNECTED REVIEW DATA</small></article><article><div class="lux-empty-review">★★★★★</div><p>Each product page is prepared for real ratings, review counts and review widgets.</p><small>REAL CUSTOMER PROOF</small></article><article><div class="lux-empty-review">★★★★★</div><p>No invented testimonials or inflated numbers. The store earns its social proof.</p><small>HAFHAFHAF STANDARD</small></article></div></section>
-<section class="lux-news"><span class="lux-label">HAFHAFHAF NOTES</span><h2>Better care,<br><i>beautifully simple.</i></h2>{% form 'customer' %}<input type="hidden" name="contact[tags]" value="newsletter"><div><input type="email" name="contact[email]" placeholder="Email address" required><button type="submit">Join →</button></div>{% endform %}</section>
-{% schema %}{"name":"Luxury HafHafHaf Home","settings":[],"presets":[{"name":"Luxury HafHafHaf Home"}]}{% endschema %}
+<section class="home-hero">
+  <div class="home-hero__copy">
+    <p class="eyebrow">SMART PET CARE / 01</p>
+    <h1>Designed for<br><em>living well.</em></h1>
+    <p class="lede">Thoughtful technology for the everyday moments that matter — feeding, cleaning and caring for the pets you love.</p>
+    <a class="link-button" href="#shop">Shop the collection <span>↗</span></a>
+  </div>
+  <a class="home-hero__media" href="{{ litter.url }}">
+    {% if litter.featured_image %}{{ litter.featured_image | image_url: width:1400 | image_tag: loading:'eager', widths:'600,900,1200,1400', sizes:'(max-width:800px) 100vw, 58vw', alt:litter.title }}{% endif %}
+    <span class="image-note">01 / AUTOMATIC LITTER SYSTEM <b>{{ litter.price | money }}</b></span>
+  </a>
+</section>
+
+<section class="intro-strip"><p>Smart products.</p><p>Quiet design.</p><p>Less daily work.</p><p>More time together.</p></section>
+
+<section class="collection-section" id="shop">
+  <div class="section-head"><div><p class="eyebrow">THE COLLECTION</p><h2>Everyday essentials.</h2></div><a href="/collections/all" class="quiet-link">View all products <span>→</span></a></div>
+  <div class="product-grid">
+    {% for product in collections.all.products limit:6 %}
+      <article class="product-card">
+        <a href="{{ product.url }}" class="product-card__media">
+          {% if product.featured_image %}{{ product.featured_image | image_url: width:1100 | image_tag: loading:'lazy', widths:'450,700,900,1100', sizes:'(max-width:700px) 92vw, (max-width:1000px) 46vw, 31vw', alt:product.title }}{% endif %}
+          <span class="product-card__view">View product</span>
+        </a>
+        <div class="product-card__details"><div><a href="{{ product.url }}">{{ product.title }}</a><small>{{ product.type | default:'Smart pet care' }}</small></div><strong>{{ product.price | money }}</strong></div>
+        {% assign rating = product.metafields.reviews.rating.value.rating %}{% assign count = product.metafields.reviews.rating_count.value %}
+        {% if count and count > 0 %}<div class="product-rating"><span>★★★★★</span> {{ rating | round:1 }} · {{ count }} reviews</div>{% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="editorial">
+  <div class="editorial__media">{% if feeder.featured_image %}{{ feeder.featured_image | image_url: width:1300 | image_tag: loading:'lazy', widths:'600,900,1100,1300', sizes:'(max-width:800px) 100vw, 56vw', alt:feeder.title }}{% endif %}</div>
+  <div class="editorial__copy"><p class="eyebrow">CONNECTED CARE / 02</p><h2>Technology that<br><em>stays out of the way.</em></h2><p>Automatic routines should feel simple. Our smart essentials are designed to work quietly in the background while your home stays yours.</p><a class="quiet-link" href="{{ feeder.url }}">Discover the smart feeder <span>→</span></a></div>
+</section>
+
+<section class="color-story"><div class="color-story__copy"><p class="eyebrow">THE HAFHAFHAF STANDARD</p><h2>Good design<br>should feel <em>obvious.</em></h2><p>We choose useful technology, clean forms and materials that belong in a modern home. Nothing unnecessary.</p></div><div class="color-story__blocks"><span></span><span></span><span></span></div></section>
+
+<section class="review-section"><div class="section-head"><div><p class="eyebrow">CUSTOMER REVIEWS</p><h2>Real people.<br>Real routines.</h2></div><p class="review-note">Only genuine review data is shown here. Connect your review provider to populate this section.</p></div><div class="review-cards"><article><span>★★★★★</span><p>Verified customer reviews will appear here automatically.</p><small>REAL CUSTOMER PROOF</small></article><article><span>★★★★★</span><p>We don't manufacture ratings or testimonials to make the store look bigger.</p><small>HAFHAFHAF STANDARD</small></article><article><span>★★★★★</span><p>Every product page is ready for your genuine review content.</p><small>PRODUCT REVIEWS</small></article></div></section>
+
+<section class="newsletter"><p class="eyebrow">STAY IN THE LOOP</p><h2>Good things for<br><em>good companions.</em></h2>{% form 'customer' %}<input type="hidden" name="contact[tags]" value="newsletter"><div class="newsletter__form"><input type="email" name="contact[email]" placeholder="Your email address" required><button type="submit">Subscribe <span>→</span></button></div>{% endform %}</section>
+{% schema %}{"name":"HafHafHaf Home","settings":[],"presets":[{"name":"HafHafHaf Home"}]}{% endschema %}
